@@ -3,6 +3,7 @@ package com.reesdev.file_storage_api.service;
 import com.reesdev.file_storage_api.dto.LoginRequest;
 import com.reesdev.file_storage_api.dto.LoginResponse;
 import com.reesdev.file_storage_api.entity.User;
+import com.reesdev.file_storage_api.exception.InvalidCredentialsException;
 import com.reesdev.file_storage_api.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -20,7 +21,7 @@ public class AuthService {
 
     public LoginResponse login(LoginRequest request){
         User user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(()-> new RuntimeException("Email Not Found"));
+                .orElseThrow(()-> new InvalidCredentialsException("Email Not Found"));
 
         boolean isPasswordMatch = passwordEncoder.matches(
                 request.getPassword(),
@@ -28,7 +29,7 @@ public class AuthService {
                 );
 
         if(!isPasswordMatch){
-            throw new RuntimeException("Invalid Password");
+            throw new InvalidCredentialsException("Invalid Email or Password");
         }
         return new LoginResponse("Login Success");
     }
