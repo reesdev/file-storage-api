@@ -1,4 +1,7 @@
 package com.reesdev.file_storage_api.repository;
 
-public class FileRepository {
+import com.reesdev.file_storage_api.entity.FileData;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface FileRepository extends JpaRepository<FileData, Long> {
 }
