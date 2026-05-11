@@ -29,4 +29,8 @@ public class FileController {
     public List<FileResponse> getAllFiles() {
         return fileService.getAllFiles();
     }
+    @GetMapping("/my-files")
+    public List<FileResponse> getMyFiles() {
+        return fileService.getMyFiles();
+    }
 }

@@ -81,4 +81,23 @@ public class FileService {
                 ))
                 .toList();
     }
+    public List<FileResponse> getMyFiles() {
+
+        String email = SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getName();
+
+        return fileRepository.findByUploadedBy(email)
+                .stream()
+                .map(file -> new FileResponse(
+                        file.getId(),
+                        file.getOriginalFileName(),
+                        file.getStoredFileName(),
+                        file.getFileSize(),
+                        file.getUploadedAt(),
+                        file.getUploadedBy()
+                ))
+                .toList();
+    }
 }
