@@ -1,0 +1,26 @@
+services:
+  file-storage-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    container_name: file-storage-api-student1
+
+    ports:
+      - "9001:9001"
+
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://be_mysql:3306/db_spring_student1
+      SPRING_DATASOURCE_USERNAME: backend
+      SPRING_DATASOURCE_PASSWORD: rahasia_banget
+
+      SERVER_PORT: 9001
+
+    restart: always
+
+    networks:
+      - be_classroom_net
+
+networks:
+  be_classroom_net:
+    external: true
