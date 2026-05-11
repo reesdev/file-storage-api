@@ -28,4 +28,8 @@ public class UserController {
     {
         return userService.getAllUsers();
     }
+    @GetMapping("/profile")
+    public String profile(){
+        return "Protected Profile";
+    }
 }
