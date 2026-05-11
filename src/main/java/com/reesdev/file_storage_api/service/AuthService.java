@@ -5,6 +5,7 @@ import com.reesdev.file_storage_api.dto.LoginResponse;
 import com.reesdev.file_storage_api.entity.User;
 import com.reesdev.file_storage_api.exception.InvalidCredentialsException;
 import com.reesdev.file_storage_api.repository.UserRepository;
+import com.reesdev.file_storage_api.security.JwtService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -12,11 +13,13 @@ import org.springframework.stereotype.Service;
 public class AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
 
     public AuthService(UserRepository userRepository,
-                       PasswordEncoder passwordEncoder){
+                       PasswordEncoder passwordEncoder,JwtService jwtService){
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.jwtService = jwtService;
     }
 
     public LoginResponse login(LoginRequest request){
@@ -31,6 +34,7 @@ public class AuthService {
         if(!isPasswordMatch){
             throw new InvalidCredentialsException("Invalid Email or Password");
         }
-        return new LoginResponse("Login Success");
+        String token = jwtService.generateToken(user.getEmail());
+        return new LoginResponse(token);
     }
 }
