@@ -1,5 +1,6 @@
 package com.reesdev.file_storage_api.service;
 
+import com.reesdev.file_storage_api.dto.UserResponse;
 import com.reesdev.file_storage_api.entity.User;
 import com.reesdev.file_storage_api.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -13,8 +14,13 @@ public class UserService {
     public UserService(UserRepository userRepository){
         this.userRepository = userRepository;
     }
-    public User createUser(User user){
-        return  userRepository.save(user);
+    public UserResponse createUser(User user){
+        User savedUser = userRepository.save(user);
+
+        return new UserResponse(
+                savedUser.getId(),
+                savedUser.getName(),
+                savedUser.getEmail());
     }
     public List<User> getAllUsers(){
         return userRepository.findAll();

@@ -1,5 +1,6 @@
 package com.reesdev.file_storage_api.controller;
 
+import com.reesdev.file_storage_api.dto.UserResponse;
 import com.reesdev.file_storage_api.entity.User;
 import com.reesdev.file_storage_api.service.UserService;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +17,7 @@ public class UserController {
     }
 
     @PostMapping
-    public User createUser(@RequestBody User user)
+    public UserResponse createUser(@RequestBody User user)
     {
         return userService.createUser(user);
     }
