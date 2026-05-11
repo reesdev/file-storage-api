@@ -1,8 +1,10 @@
 package com.reesdev.file_storage_api.controller;
 
+import com.reesdev.file_storage_api.dto.CreateUserRequest;
 import com.reesdev.file_storage_api.dto.UserResponse;
 import com.reesdev.file_storage_api.entity.User;
 import com.reesdev.file_storage_api.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,9 +19,9 @@ public class UserController {
     }
 
     @PostMapping
-    public UserResponse createUser(@RequestBody User user)
+    public UserResponse createUser(@Valid @RequestBody CreateUserRequest request)
     {
-        return userService.createUser(user);
+        return userService.createUser(request);
     }
     @GetMapping
     public List<User> getALlUsers()
