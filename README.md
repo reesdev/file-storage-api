@@ -4,15 +4,16 @@
 
 File Storage & Management API is a backend application built with Spring Boot that provides:
 
-* User registration
-* JWT authentication
-* Protected API access
-* File upload management
-* File metadata storage
-* File ownership authorization
-* Docker deployment support
+- User registration
+- JWT authentication
+- Protected API access
+- File upload management
+- File metadata storage
+- File ownership authorization
+- Docker deployment support
+- CI/CD automated deployment
 
-This project was developed as part of a backend deployment assignment using VPS and Docker.
+This project was developed as part of a backend deployment assignment using VPS, Docker, and GitHub Actions CI/CD.
 
 ---
 
@@ -20,45 +21,50 @@ This project was developed as part of a backend deployment assignment using VPS 
 
 ## Authentication & Security
 
-* User Registration
-* Login Authentication
-* JWT Token Authentication
-* Protected Routes
-* BCrypt Password Hashing
-* Stateless Authentication
+- User Registration
+- Login Authentication
+- JWT Token Authentication
+- Protected Routes
+- BCrypt Password Hashing
+- Stateless Authentication
 
 ## File Management
 
-* Upload File
-* UUID File Naming
-* File Metadata Storage
-* File Ownership Authorization
-* Get Uploaded Files
-* Get User Uploaded Files
+- Upload File
+- UUID File Naming
+- File Metadata Storage
+- File Ownership Authorization
+- Get Uploaded Files
+- Get User Uploaded Files
 
-## Deployment
+## Deployment & DevOps
 
-* Dockerized Application
-* Docker Compose Support
-* VPS Deployment
-* Environment Variable Configuration
+- Dockerized Spring Boot Application
+- Docker Compose Support
+- VPS Deployment
+- GitHub Actions CI/CD
+- DockerHub Integration
+- Environment Variable Configuration
+- Automated Deployment Pipeline
 
 ---
 
 # Tech Stack
 
-| Technology      | Description                    |
-| --------------- | ------------------------------ |
-| Java 21         | Programming Language           |
-| Spring Boot     | Backend Framework              |
+| Technology | Description |
+|---|---|
+| Java 21 | Programming Language |
+| Spring Boot | Backend Framework |
 | Spring Security | Authentication & Authorization |
-| JWT             | Stateless Authentication       |
-| Spring Data JPA | ORM                            |
-| MySQL           | Database                       |
-| Docker          | Containerization               |
-| Docker Compose  | Container Orchestration        |
-| Maven           | Build Tool                     |
-| Postman         | API Testing                    |
+| JWT | Stateless Authentication |
+| Spring Data JPA | ORM |
+| MySQL | Database |
+| Docker | Containerization |
+| Docker Compose | Container Orchestration |
+| GitHub Actions | CI/CD Automation |
+| DockerHub | Container Registry |
+| Maven | Build Tool |
+| Postman | API Testing |
 
 ---
 
@@ -83,29 +89,29 @@ src/main/java/com/reesdev/file_storage_api
 
 ## Authentication
 
-| Method | Endpoint    | Description                       |
-| ------ | ----------- | --------------------------------- |
-| POST   | /auth/login | Login user and generate JWT token |
+| Method | Endpoint | Description |
+|---|---|---|
+| POST | /auth/login | Login user and generate JWT token |
 
 ---
 
 ## Users
 
-| Method | Endpoint       | Description                       |
-| ------ | -------------- | --------------------------------- |
-| POST   | /users         | Register new user                 |
-| GET    | /users         | Get all users                     |
-| GET    | /users/profile | Access protected profile endpoint |
+| Method | Endpoint | Description |
+|---|---|---|
+| POST | /users | Register new user |
+| GET | /users | Get all users |
+| GET | /users/profile | Access protected profile endpoint |
 
 ---
 
 ## Files
 
-| Method | Endpoint        | Description                     |
-| ------ | --------------- | ------------------------------- |
-| POST   | /files/upload   | Upload file                     |
-| GET    | /files          | Get all uploaded files          |
-| GET    | /files/my-files | Get current user uploaded files |
+| Method | Endpoint | Description |
+|---|---|---|
+| POST | /files/upload | Upload file |
+| GET | /files | Get all uploaded files |
+| GET | /files/my-files | Get current user uploaded files |
 
 ---
 
@@ -125,7 +131,7 @@ cd file-storage-api
 
 # 2. Configure Database
 
-Create a MySQL database.
+Create MySQL database.
 
 Example:
 
@@ -142,18 +148,27 @@ Create a `.env` file in the root project.
 Example:
 
 ```env
-SPRING_DATASOURCE_URL=jdbc:mysql://host.docker.internal:3306/file_storage_db
-SPRING_DATASOURCE_USERNAME=root
-SPRING_DATASOURCE_PASSWORD=your_mysql_password
+APP_PORT=9001
 
-SERVER_PORT=9001
+DOCKERHUB_USERNAME=your_dockerhub_username
+
+SPRING_PROFILES_ACTIVE=dev
+
+DB_HOST=host.docker.internal
+DB_PORT=3306
+DB_NAME=file_storage_db
+DB_USER=root
+DB_PASSWORD=your_mysql_password
+
+REDIS_HOST=localhost
+REDIS_PORT=6379
 ```
 
 ---
 
 # 4. Run Application Using Docker
 
-Build and run the container:
+Build and run container:
 
 ```bash
 docker compose up -d --build
@@ -264,8 +279,8 @@ Bearer Token
 form-data
 ```
 
-| Key  | Type |
-| ---- | ---- |
+| Key | Type |
+|---|---|
 | file | File |
 
 ---
@@ -290,10 +305,10 @@ Authorization: Bearer JWT_TOKEN
 
 ## Dockerfile
 
-This project uses a multi-stage Docker build:
+This project uses multi-stage Docker build:
 
-* Build Stage using Maven + Java 21
-* Runtime Stage using Eclipse Temurin JRE
+- Build Stage using Maven + Java 21
+- Runtime Stage using Eclipse Temurin JRE
 
 ---
 
@@ -301,10 +316,38 @@ This project uses a multi-stage Docker build:
 
 Docker Compose is used to:
 
-* Build application container
-* Configure environment variables
-* Expose application port
-* Connect to classroom Docker network
+- Configure application container
+- Configure environment variables
+- Expose application port
+- Connect to classroom Docker network
+
+---
+
+# CI/CD Workflow
+
+This project uses GitHub Actions for automated deployment.
+
+Deployment flow:
+
+1. Push code to main branch
+2. GitHub Actions automatically builds application
+3. Docker image is pushed to DockerHub
+4. VPS automatically pulls latest image
+5. Docker Compose restarts container
+
+CI/CD Features:
+
+- Automated Maven build
+- Automated Docker image build
+- DockerHub image publishing
+- Automated VPS deployment
+- Continuous Deployment workflow
+
+Deployment status can be monitored from:
+
+```text
+GitHub Repository → Actions
+```
 
 ---
 
@@ -351,14 +394,23 @@ nano .env
 Example:
 
 ```env
-SPRING_DATASOURCE_URL=jdbc:mysql://be_mysql:3306/db_spring_student1
-SPRING_DATASOURCE_USERNAME=backend
-SPRING_DATASOURCE_PASSWORD=your_database_password
+APP_PORT=9001
 
-SERVER_PORT=9001
+DOCKERHUB_USERNAME=your_dockerhub_username
+
+SPRING_PROFILES_ACTIVE=dev
+
+DB_HOST=be_mysql
+DB_PORT=3306
+DB_NAME=db_spring_student1
+DB_USER=backend
+DB_PASSWORD=your_database_password
+
+REDIS_HOST=be_redis
+REDIS_PORT=6379
 ```
 
-Save:
+Save file:
 
 ```text
 CTRL + O
@@ -368,28 +420,29 @@ CTRL + X
 
 ---
 
-## 6. Build and Run Container
+## 6. Push to Main Branch
 
 ```bash
-docker compose up -d --build
+git push origin main
 ```
 
 ---
 
-## 7. Verify Running Container
+## 7. Automatic Deployment
 
-```bash
-docker ps
-```
+GitHub Actions will automatically:
 
----
+- Build Spring Boot application
+- Build Docker image
+- Push image to DockerHub
+- Connect to VPS server
+- Pull latest Docker image
+- Restart Docker container
 
-## 8. Test Public API
-
-Example:
+Deployment process can be monitored from:
 
 ```text
-http://38.47.180.195:9001/users
+GitHub Repository → Actions
 ```
 
 ---
@@ -404,12 +457,54 @@ https://reesky-it-9010141.postman.co/workspace/Riski-forwork's-Workspace~a9a28de
 
 ---
 
-# Sample Deployment Result
-
-## Public API URL
+# Public API URL
 
 ```text
 http://38.47.180.195:9001
+```
+
+---
+
+# Sample Testing
+
+## Get All Users
+
+```http
+GET /users
+```
+
+Status:
+
+```text
+200 OK
+```
+
+---
+
+## Login User
+
+```http
+POST /auth/login
+```
+
+Status:
+
+```text
+200 OK
+```
+
+---
+
+## Upload File
+
+```http
+POST /files/upload
+```
+
+Status:
+
+```text
+200 OK
 ```
 
 ---
